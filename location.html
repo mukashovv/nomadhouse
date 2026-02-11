@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="nomadhouse — расположение в Кажы‑Саз.">
+    <title>nomadhouse — расположение</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="build/css/styles.css">
+    <style>
+        :root {
+            --nh-ink: #0f1417;
+            --nh-accent: #ffb86b;
+            --nh-surface: #ffffff;
+            --nh-border: #e7e1d9;
+        }
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .site-menu {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex: 1;
+        }
+        .brand__mark {
+            background: transparent;
+            box-shadow: none;
+            overflow: hidden;
+        }
+        .brand__mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .site-menu a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 400;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            font-size: 12px;
+        }
+        .site-menu a:hover {
+            color: #fff;
+        }
+        .site-actions {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        .soc-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .soc-icon i {
+            font-size: 14px;
+        }
+        .brand {
+            text-decoration: none;
+        }
+        .brand__name {
+            color: #fff;
+        }
+        .page-hero {
+            padding: 40px 0 20px;
+        }
+        .page-hero h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .page-hero p {
+            color: var(--text-muted);
+            max-width: 700px;
+            line-height: 1.6;
+        }
+        .contact-block {
+            margin: 24px 0 32px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 20px;
+            display: grid;
+            gap: 8px;
+        }
+        .contact-block a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .contact-block a:hover {
+            text-decoration: underline;
+        }
+        .map {
+            width: 100%;
+            height: 420px;
+            border: 0;
+            border-radius: 18px;
+            overflow: hidden;
+            filter: none;
+        }
+        @media (max-width: 900px) {
+            .map {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="site-header">
+            <div class="container">
+                <a class="brand" href="/">
+                    <div class="brand__mark"><img src="assets/img/logo-nomadhouse.jpg" alt="nomadhouse"></div>
+                    <div class="brand__text">
+                        <span class="brand__name">nomadhouse</span>
+                    </div>
+                </a>
+                <nav class="site-menu">
+                    <a href="entertainment.html">Развлечения</a>
+                    <a href="location.html">Расположение</a>
+                </nav>
+                <nav class="site-actions" aria-label="Социальные сети">
+                    <a class="soc-icon" href="https://instagram.com/nomadhouse_kg" target="_blank" rel="noopener" aria-label="Instagram nomadhouse_kg">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a class="soc-icon" href="https://t.me/nomadhouse_kg" target="_blank" rel="noopener" aria-label="Telegram nomadhouse_kg">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="page-hero">
+                <div class="container">
+                    <h1>Расположение</h1>
+                    <p>nomadhouse находится в Кажы‑Саз — это лес, уединение и чистый воздух вдали от городской суеты. Идеальное место, чтобы выключить шум и восстановить силы.</p>
+                </div>
+            </section>
+
+            <section>
+                <div class="container">
+                    <div class="contact-block">
+                        <strong>Контакты</strong>
+                        <div>Номер: <a href="tel:+996709139603">+996 709 139 603</a></div>
+                        <div>WhatsApp: <a href="https://wa.me/996709139603" target="_blank" rel="noopener">Написать в WhatsApp</a></div>
+                    </div>
+                    <iframe class="map" src="https://maps.google.com/maps?q=42.08314,77.22508&z=12&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p>nomadhouse. Приезжайте за тишиной и воздухом.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

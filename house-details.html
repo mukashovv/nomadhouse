@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="nomadhouse — подробная информация о доме.">
+    <title>nomadhouse — дом</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="build/css/styles.css">
+    <style>
+        :root {
+            --nh-ink: #0f1417;
+            --nh-accent: #ffb86b;
+            --nh-surface: #ffffff;
+            --nh-border: #e7e1d9;
+        }
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .site-menu {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex: 1;
+        }
+        .site-menu a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 400;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            font-size: 12px;
+        }
+        .site-menu a:hover {
+            color: #fff;
+        }
+        .site-actions {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        .soc-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .soc-icon i { font-size: 14px; }
+        .brand { text-decoration: none; }
+        .brand__name { color: #fff; }
+        .brand__mark { background: transparent; box-shadow: none; overflow: hidden; }
+        .brand__mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .house-hero {
+            padding: 40px 0 24px;
+        }
+        .house-hero h1 {
+            font-family: var(--font-title);
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+        .house-hero p {
+            color: var(--text-muted);
+        }
+        .house-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .house-gallery {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .house-gallery__main {
+            height: 360px;
+            background: #0f1417;
+            position: relative;
+            overflow: hidden;
+        }
+        .house-gallery__slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.35s ease;
+        }
+        .house-gallery__slide {
+            flex: 0 0 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .house-gallery__thumbs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 14px;
+        }
+        .house-gallery__thumb {
+            height: 90px;
+            border-radius: 12px;
+            background: #1b1f22 center/cover no-repeat;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .house-gallery__thumb.is-active {
+            border-color: var(--nh-accent);
+        }
+        .house-info {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 20px;
+            display: grid;
+            gap: 14px;
+        }
+        .house-info h3 {
+            margin: 0;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8a6a4f;
+        }
+        .house-info p { margin: 0; color: var(--text-muted); line-height: 1.5; }
+        .house-price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .house-reviews {
+            margin-top: 20px;
+            display: grid;
+            gap: 12px;
+        }
+        .house-review {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 12px 14px;
+            color: #e7e1d9;
+            font-size: 13px;
+        }
+        .house-review strong { display: block; margin-bottom: 6px; color: #fff; }
+        @media (max-width: 980px) {
+            .house-grid { grid-template-columns: 1fr; }
+            .house-gallery__main { height: 260px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="site-header">
+            <div class="container">
+                <a class="brand" href="/">
+                    <div class="brand__mark"><img src="assets/img/logo-nomadhouse.jpg" alt="nomadhouse"></div>
+                    <div class="brand__text">
+                        <span class="brand__name">nomadhouse</span>
+                    </div>
+                </a>
+                <nav class="site-menu">
+                    <a href="entertainment.html">Развлечения</a>
+                    <a href="location.html">Расположение</a>
+                </nav>
+                <nav class="site-actions" aria-label="Социальные сети">
+                    <a class="soc-icon" href="https://instagram.com/nomadhouse_kg" target="_blank" rel="noopener" aria-label="Instagram nomadhouse_kg">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a class="soc-icon" href="https://t.me/nomadhouse_kg" target="_blank" rel="noopener" aria-label="Telegram nomadhouse_kg">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="house-hero">
+                <div class="container">
+                    <h1 id="houseTitle">Дом</h1>
+                    <p id="houseMeta">Описание дома.</p>
+                </div>
+            </section>
+            <section>
+                <div class="container">
+                    <div class="house-grid">
+                        <div class="house-gallery">
+                            <div class="house-gallery__main" id="houseMain"></div>
+                            <div class="house-gallery__thumbs" id="houseThumbs"></div>
+                        </div>
+                        <div class="house-info">
+                            <div>
+                                <h3>Удобства</h3>
+                                <p id="houseAmenities"></p>
+                            </div>
+                            <div>
+                                <h3>Правила проживания</h3>
+                                <p id="houseRules"></p>
+                            </div>
+                            <div>
+                                <h3>Стоимость/ночь</h3>
+                                <p class="house-price" id="housePrice"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="house-reviews" id="houseReviews"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p>nomadhouse. Уют и тишина в горах.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const data = {
+            big: {
+                title: "Дом 70 м²",
+                meta: "Для 6–7 человек",
+                amenities: "Кухня, Wi‑Fi, панорамные окна, отопление",
+                rules: "Тихий режим после 23:00, без вечеринок, размещение с питомцами по запросу",
+                price: "9 900 сом / ночь",
+                gallery: [
+                    "assets/img/cards/nomadhouse.png",
+                    "assets/img/cards/nomadhouse.png",
+                    "assets/img/cards/nomadhouse.png"
+                ],
+                reviews: [
+                    { name: "Айжан, Бишкек", text: "Очень уютный дом и потрясающий вид на лес." },
+                    { name: "Руслан, Алматы", text: "Идеально для компании — много места и тишина." },
+                    { name: "Виктория, Каракол", text: "Чисто, тепло и приятно отдыхать." }
+                ]
+            },
+            small: {
+                title: "Дом 18 м²",
+                meta: "Для двоих",
+                amenities: "Теплый пол, чайная зона, Wi‑Fi, вид на горы",
+                rules: "Размещение до 2 гостей, без курения внутри, бережное отношение к интерьеру",
+                price: "5 900 сом / ночь",
+                gallery: [
+                    "assets/img/cards/nomadform.png",
+                    "assets/img/cards/nomadform.png",
+                    "assets/img/cards/nomadform.png"
+                ],
+                reviews: [
+                    { name: "Элина, Бишкек", text: "Очень атмосферно и тихо, отличный вид." },
+                    { name: "Арсен, Ош", text: "Уютно для пары, все продумано." },
+                    { name: "Ольга, Алматы", text: "Прекрасный отдых и свежий воздух." }
+                ]
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const key = params.get("house") || "big";
+        const house = data[key] || data.big;
+
+        document.getElementById("houseTitle").textContent = house.title;
+        document.getElementById("houseMeta").textContent = house.meta;
+        document.getElementById("houseAmenities").textContent = house.amenities;
+        document.getElementById("houseRules").textContent = house.rules;
+        document.getElementById("housePrice").textContent = house.price;
+
+        const main = document.getElementById("houseMain");
+        const thumbs = document.getElementById("houseThumbs");
+        if (house.gallery.length) {
+            const slider = document.createElement("div");
+            slider.className = "house-gallery__slider";
+            slider.innerHTML = house.gallery
+                .map((url) => `<div class="house-gallery__slide" style="background-image:url('${url}')"></div>`)
+                .join("");
+            main.appendChild(slider);
+            let index = 0;
+            const update = () => {
+                slider.style.transform = `translateX(-${index * 100}%)`;
+                Array.from(thumbs.children).forEach((thumb, i) => {
+                    thumb.classList.toggle("is-active", i === index);
+                });
+            };
+            thumbs.innerHTML = house.gallery
+                .map((url, i) => `<button class="house-gallery__thumb${i === 0 ? " is-active" : ""}" style="background-image:url('${url}')" data-index="${i}"></button>`)
+                .join("");
+            thumbs.addEventListener("click", (event) => {
+                const btn = event.target.closest(".house-gallery__thumb");
+                if (!btn) return;
+                index = Number(btn.dataset.index || 0);
+                update();
+            });
+            update();
+        }
+
+        const reviews = document.getElementById("houseReviews");
+        reviews.innerHTML = house.reviews
+            .map((item) => `<div class="house-review"><strong>${item.name}</strong>${item.text}</div>`)
+            .join("");
+    </script>
+</body>
+</html>

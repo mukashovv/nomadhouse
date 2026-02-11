@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="nomadhouse — аренда домов в горах. Выберите даты и забронируйте дом.">
+    <title>nomadhouse — бронирование</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="build/css/styles.css">
+    <style>
+        :root {
+            --nh-ink: #0f1417;
+            --nh-accent: #ffb86b;
+            --nh-surface: #ffffff;
+            --nh-border: #e7e1d9;
+        }
+        .booking {
+            padding: 40px 0 80px;
+        }
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .site-menu {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex: 1;
+        }
+        .brand__mark {
+            background: transparent;
+            box-shadow: none;
+            overflow: hidden;
+        }
+        .brand__mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .site-menu a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 400;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+            font-size: 12px;
+        }
+        .site-menu a:hover {
+            color: #fff;
+        }
+        .site-actions {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        .soc-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .soc-icon i {
+            font-size: 14px;
+        }
+        .brand {
+            text-decoration: none;
+        }
+        .brand__name {
+            color: #fff;
+        }
+        .booking-hero {
+            padding: 28px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+        }
+        .booking-hero h2 {
+            font-family: var(--font-title);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .booking-hero p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .booking-form {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr auto;
+            gap: 12px;
+            align-items: center;
+            background: rgba(15, 20, 23, 0.9);
+            padding: 12px;
+            border-radius: 16px;
+        }
+        .date-field {
+            position: relative;
+        }
+        .date-trigger,
+        .guests-trigger {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: #ffffff;
+            color: #98a0ad;
+            font-family: var(--font-body);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            min-height: 52px;
+        }
+        .date-trigger.has-value {
+            color: #111;
+        }
+        .date-hidden {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            height: 0;
+            display: none;
+        }
+        .guests-field {
+            position: relative;
+        }
+        .guests-panel {
+            position: absolute;
+            left: 0;
+            top: calc(100% + 14px);
+            width: min(460px, 92vw);
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+            padding: 20px;
+            display: none;
+            z-index: 10;
+        }
+        .guests-panel.is-open {
+            display: block;
+        }
+        .guests-panel h4 {
+            margin: 0 0 12px;
+            font-size: 18px;
+            color: #111;
+        }
+        .guest-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: center;
+            padding: 16px 0;
+            border-top: 1px solid #eef0f4;
+        }
+        .guest-row:first-of-type {
+            border-top: none;
+        }
+        .guest-row span {
+            color: #111;
+        }
+        .guest-row small {
+            color: #7a7f87;
+        }
+        .guest-controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .guest-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--nh-ink);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .guest-count {
+            min-width: 24px;
+            text-align: center;
+            font-size: 18px;
+            color: #111;
+        }
+        .booking-form .button {
+            justify-content: center;
+            height: 52px;
+            background: var(--nh-accent);
+            border-radius: 16px;
+            font-size: 16px;
+            color: #111;
+            cursor: pointer;
+        }
+        .house-card__actions .button,
+        .house-modal__actions .button {
+            cursor: pointer;
+        }
+        .booking-note {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .houses {
+            margin-top: 28px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+        .houses.is-hidden {
+            display: none;
+        }
+        .houses-empty,
+        .houses-note {
+            margin-top: 16px;
+            color: var(--text-muted);
+            font-size: 14px;
+            display: none;
+        }
+        .houses-empty.is-visible,
+        .houses-note.is-visible {
+            display: block;
+        }
+        .house-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            overflow: hidden;
+            display: grid;
+            grid-template-rows: 220px 1fr;
+        }
+        .house-card__image {
+            background: #0f1417 center/cover no-repeat;
+        }
+        .house-card__body {
+            padding: 18px 18px 20px;
+            display: grid;
+            gap: 10px;
+        }
+        .house-card__title {
+            font-family: var(--font-title);
+            font-size: 18px;
+        }
+        .house-card__meta {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .house-card__list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .house-card__actions {
+            margin-top: 6px;
+        }
+        .house-card__actions .button {
+            width: 100%;
+        }
+        @media (max-width: 900px) {
+            .booking-form {
+                grid-template-columns: 1fr;
+            }
+            .houses {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .house-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: grid;
+            place-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 100;
+        }
+        .house-modal.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .house-modal__panel {
+            width: min(720px, 92vw);
+            background: #ffffff;
+            border-radius: 22px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        }
+        .house-modal__image {
+            min-height: 260px;
+            background: #0f1417;
+            position: relative;
+            overflow: hidden;
+        }
+        .house-modal__more {
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+            z-index: 3;
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+            padding-bottom: 2px;
+            pointer-events: auto;
+        }
+        .house-modal__slider {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.35s ease;
+        }
+        .house-modal__slide {
+            flex: 0 0 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .house-modal__content {
+            padding: 22px;
+            display: grid;
+            gap: 10px;
+            color: #111;
+        }
+        .house-modal__title {
+            font-family: var(--font-title);
+            font-size: 20px;
+        }
+        .house-modal__meta {
+            color: #666;
+            font-size: 13px;
+        }
+        .house-modal__list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 6px;
+            color: #555;
+            font-size: 13px;
+        }
+        .house-modal__gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .house-modal__thumb {
+            width: 100%;
+            height: 86px;
+            border-radius: 8px;
+            background: #f4f4f4 center/cover no-repeat;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .house-modal__thumb.is-active {
+            border-color: var(--nh-accent);
+        }
+        .house-modal__section {
+            display: grid;
+            gap: 6px;
+        }
+        .house-modal__section h4 {
+            margin: 0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8a6a4f;
+        }
+        .house-modal__section p {
+            margin: 0;
+            color: #3a3a3a;
+            line-height: 1.5;
+        }
+        .house-modal__price {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111;
+        }
+        .house-modal__actions .button {
+            width: 100%;
+        }
+        .house-modal__close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+        }
+        .house-modal__close::before,
+        .house-modal__close::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 2px;
+            background: #111;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        .house-modal__close::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        @media (max-width: 900px) {
+            .house-modal__panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .date-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: grid;
+            place-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 130;
+        }
+        .date-modal.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .date-modal__panel {
+            width: min(420px, 92vw);
+            max-height: 82vh;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px;
+            color: #111;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 12px;
+        }
+        .date-modal__content {
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .date-modal__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .date-modal__title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .date-modal__close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            position: relative;
+        }
+        .date-modal__close::before,
+        .date-modal__close::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 2px;
+            background: #111;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        .date-modal__close::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        .calendar {
+            display: grid;
+            gap: 14px;
+        }
+        .calendar__month {
+            text-align: center;
+            font-weight: 600;
+            margin: 8px 0;
+        }
+        .calendar__grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+        .calendar__day {
+            text-align: center;
+            font-size: 12px;
+            color: #7a7f87;
+        }
+        .calendar__date {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .calendar__date.is-selected,
+        .calendar__date.is-range {
+            border-color: #111;
+        }
+        .calendar__date.is-range {
+            background: #f3f3f3;
+        }
+        .calendar__footer {
+            margin-top: 12px;
+        }
+        .calendar__apply {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: none;
+            background: var(--nh-accent);
+            color: #111;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="site-header">
+            <div class="container">
+                <a class="brand" href="/">
+                    <div class="brand__mark"><img src="assets/img/logo-nomadhouse.jpg" alt="nomadhouse"></div>
+                    <div class="brand__text">
+                        <span class="brand__name">nomadhouse</span>
+                    </div>
+                </a>
+                <nav class="site-menu">
+                    <a href="entertainment.html">Развлечения</a>
+                    <a href="location.html">Расположение</a>
+                </nav>
+                <nav class="site-actions" aria-label="Социальные сети">
+                    <a class="soc-icon" href="https://instagram.com/nomadhouse_kg" target="_blank" rel="noopener" aria-label="Instagram nomadhouse_kg">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a class="soc-icon" href="https://t.me/nomadhouse_kg" target="_blank" rel="noopener" aria-label="Telegram nomadhouse_kg">
+                        <i class="fab fa-telegram-plane"></i>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="booking">
+                <div class="container">
+                    <div class="booking-hero">
+                        <h2>Забронируйте дом в nomadhouse</h2>
+                        <p>Выберите даты и количество гостей, затем нажмите «Найти дома».</p>
+                        <form class="booking-form" id="bookingForm">
+                            <div class="date-field">
+                                <div class="date-trigger" id="dateTrigger">Дата заезда — Дата выезда <i class="fas fa-chevron-down"></i></div>
+                                <input type="date" id="bookingDate" name="bookingDate" class="date-hidden" required>
+                                <input type="date" id="bookingDateOut" name="bookingDateOut" class="date-hidden" required>
+                            </div>
+                            <div class="guests-field">
+                                <div class="guests-trigger" id="guestsTrigger">2 гостя <i class="fas fa-chevron-down"></i></div>
+                                <div class="guests-panel" id="guestsPanel">
+                                    <h4>Количество гостей</h4>
+                                    <div class="guest-row">
+                                        <div>
+                                            <span>Взрослые</span><br>
+                                            <small>18 лет и старше</small>
+                                        </div>
+                                        <div class="guest-controls">
+                                            <button type="button" class="guest-btn" data-type="adult" data-action="dec">−</button>
+                                            <span id="adultCount" class="guest-count">2</span>
+                                            <button type="button" class="guest-btn" data-type="adult" data-action="inc">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="guest-row">
+                                        <div>
+                                            <span>Дети</span><br>
+                                            <small>от 0 до 17 лет</small>
+                                        </div>
+                                        <div class="guest-controls">
+                                            <button type="button" class="guest-btn" data-type="child" data-action="dec">−</button>
+                                            <span id="childCount" class="guest-count">0</span>
+                                            <button type="button" class="guest-btn" data-type="child" data-action="inc">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="button">Найти дома</button>
+                            <div class="booking-note">Мы откроем WhatsApp с вашим сообщением.</div>
+                        </form>
+                    </div>
+                    <div class="houses" id="housesContainer">
+                        <article class="house-card" data-house="Большой дом 70 м²" data-capacity="6-7 человек" data-max="7" data-slug="big">
+                            <div class="house-card__image" style="background-image:url('assets/img/cards/nomadhouse.png')"></div>
+                            <div class="house-card__body">
+                                <div class="house-card__title">Дом 70 м²</div>
+                                <div class="house-card__meta">Для 6–7 человек</div>
+                                <ul class="house-card__list">
+                                    <li>Просторная гостиная и кухня</li>
+                                    <li>Отдельные спальни</li>
+                                    <li>Подходит для семей и компаний</li>
+                                </ul>
+                                <div class="house-card__details" hidden
+                                     data-amenities="Кухня, Wi‑Fi, панорамные окна, отопление"
+                                     data-rules="Тихий режим после 23:00, без вечеринок, размещение с питомцами по запросу"
+                                     data-price="9 900 сом / ночь"
+                                     data-gallery="assets/img/cards/nomadhouse.png,assets/img/cards/nomadhouse.png,assets/img/cards/nomadhouse.png"></div>
+                                <div class="house-card__actions">
+                                    <button type="button" class="button house-book">Забронировать</button>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="house-card" data-house="Малый дом 18 м²" data-capacity="2 человека" data-max="2" data-slug="small">
+                            <div class="house-card__image" style="background-image:url('assets/img/cards/nomadform.png')"></div>
+                            <div class="house-card__body">
+                                <div class="house-card__title">Дом 18 м²</div>
+                                <div class="house-card__meta">Для двоих</div>
+                                <ul class="house-card__list">
+                                    <li>Уютное пространство для пары</li>
+                                    <li>Панорамный вид на горы</li>
+                                    <li>Идеально для уединения</li>
+                                </ul>
+                                <div class="house-card__details" hidden
+                                     data-amenities="Теплый пол, чайная зона, Wi‑Fi, вид на горы"
+                                     data-rules="Размещение до 2 гостей, без курения внутри, бережное отношение к интерьеру"
+                                     data-price="5 900 сом / ночь"
+                                     data-gallery="assets/img/cards/nomadform.png,assets/img/cards/nomadform.png,assets/img/cards/nomadform.png"></div>
+                                <div class="house-card__actions">
+                                    <button type="button" class="button house-book">Забронировать</button>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="houses-empty" id="housesEmpty">Для такого количества гостей не найдены дома.</div>
+                    <div class="houses-note" id="housesNote">Для 8–9 гостей рекомендуем забронировать два домика.</div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p>nomadhouse. Забронируйте идеальную дату.</p>
+            </div>
+        </footer>
+    </div>
+
+    <div class="date-modal" id="dateModal" aria-hidden="true">
+        <div class="date-modal__panel">
+            <div class="date-modal__header">
+                <div class="date-modal__title">Даты поездки</div>
+                <button class="date-modal__close" type="button" aria-label="Закрыть"></button>
+            </div>
+            <div class="date-modal__content">
+                <div class="calendar" id="calendar"></div>
+            </div>
+            <div class="calendar__footer">
+                <button class="calendar__apply" type="button" id="calendarApply">Выбрать даты</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="house-modal" id="houseModal" aria-hidden="true">
+        <div class="house-modal__panel">
+            <button class="house-modal__close" type="button" aria-label="Закрыть"></button>
+            <div class="house-modal__image" id="houseModalImage">
+                <a class="house-modal__more" id="houseModalMore" href="house-details.html">Смотреть больше фото</a>
+            </div>
+            <div class="house-modal__content">
+                <div class="house-modal__title" id="houseModalTitle"></div>
+                <div class="house-modal__meta" id="houseModalMeta"></div>
+                <ul class="house-modal__list" id="houseModalList"></ul>
+                <div class="house-modal__gallery" id="houseModalGallery"></div>
+                <div class="house-modal__section">
+                    <h4>Удобства</h4>
+                    <p id="houseModalAmenities"></p>
+                </div>
+                <div class="house-modal__section">
+                    <h4>Правила проживания</h4>
+                    <p id="houseModalRules"></p>
+                </div>
+                <div class="house-modal__section">
+                    <h4>Стоимость/ночь</h4>
+                    <p class="house-modal__price" id="houseModalPrice"></p>
+                </div>
+                <div class="house-modal__actions">
+                    <button type="button" class="button" id="houseModalBook">Забронировать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("bookingForm");
+        const dateInput = document.getElementById("bookingDate");
+        const dateOutInput = document.getElementById("bookingDateOut");
+        const dateTrigger = document.getElementById("dateTrigger");
+        const dateModal = document.getElementById("dateModal");
+        const calendarEl = document.getElementById("calendar");
+        const calendarApply = document.getElementById("calendarApply");
+        const guestsTrigger = document.getElementById("guestsTrigger");
+        const guestsPanel = document.getElementById("guestsPanel");
+        const adultCountEl = document.getElementById("adultCount");
+        const childCountEl = document.getElementById("childCount");
+        const housesContainer = document.getElementById("housesContainer");
+        const housesEmpty = document.getElementById("housesEmpty");
+        const housesNote = document.getElementById("housesNote");
+        const houseModal = document.getElementById("houseModal");
+        const houseModalImage = document.getElementById("houseModalImage");
+        const houseModalTitle = document.getElementById("houseModalTitle");
+        const houseModalMeta = document.getElementById("houseModalMeta");
+        const houseModalList = document.getElementById("houseModalList");
+        const houseModalGallery = document.getElementById("houseModalGallery");
+        const houseModalAmenities = document.getElementById("houseModalAmenities");
+        const houseModalRules = document.getElementById("houseModalRules");
+        const houseModalPrice = document.getElementById("houseModalPrice");
+        const houseModalBook = document.getElementById("houseModalBook");
+        const houseModalMore = document.getElementById("houseModalMore");
+
+        let adults = 2;
+        let children = 0;
+        let hasSearched = false;
+        let activeHouseCard = null;
+        let modalGallery = [];
+        let modalIndex = 0;
+        let modalSlider = null;
+        let swipeStartX = 0;
+        let swipeStartY = 0;
+        let swipeActive = false;
+
+        const updateDateTrigger = () => {
+            const hasDates = dateInput.value && dateOutInput.value;
+            if (hasDates) {
+                const start = dateInput.value.split("-").reverse().join(".");
+                const end = dateOutInput.value.split("-").reverse().join(".");
+                dateTrigger.classList.add("has-value");
+                dateTrigger.innerHTML = `${start} — ${end} <i class="fas fa-chevron-down"></i>`;
+                calendarApply.textContent = `Выбрать ${start}–${end}`;
+            } else {
+                dateTrigger.classList.remove("has-value");
+                dateTrigger.innerHTML = `Дата заезда — Дата выезда <i class="fas fa-chevron-down"></i>`;
+                calendarApply.textContent = "Выбрать даты";
+            }
+        };
+
+        const openDateModal = () => {
+            dateModal.classList.add("is-open");
+            dateModal.setAttribute("aria-hidden", "false");
+        };
+        const closeDateModal = () => {
+            dateModal.classList.remove("is-open");
+            dateModal.setAttribute("aria-hidden", "true");
+        };
+
+        dateTrigger.addEventListener("click", openDateModal);
+        dateModal.addEventListener("click", (event) => {
+            if (event.target === dateModal) closeDateModal();
+        });
+        dateModal.querySelector(".date-modal__close").addEventListener("click", closeDateModal);
+
+        let viewMonth = new Date().getMonth();
+        let viewYear = new Date().getFullYear();
+        let rangeStart = null;
+        let rangeEnd = null;
+
+        const renderCalendar = () => {
+            calendarEl.innerHTML = "";
+            const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+            const header = document.createElement("div");
+            header.className = "calendar__grid";
+            weekdays.forEach((d) => {
+                const cell = document.createElement("div");
+                cell.className = "calendar__day";
+                cell.textContent = d;
+                header.appendChild(cell);
+            });
+            calendarEl.appendChild(header);
+            const now = new Date();
+            for (let offset = 0; offset < 12 - viewMonth; offset += 1) {
+                const month = viewMonth + offset;
+                const year = viewYear;
+                const m = month % 12;
+                const monthDate = new Date(year, m, 1);
+                const monthName = monthDate.toLocaleString("ru-RU", { month: "long", year: "numeric" });
+                const title = document.createElement("div");
+                title.className = "calendar__month";
+                title.textContent = monthName;
+                calendarEl.appendChild(title);
+
+                const grid = document.createElement("div");
+                grid.className = "calendar__grid";
+                const firstDay = (monthDate.getDay() + 6) % 7;
+                const daysInMonth = new Date(year, m + 1, 0).getDate();
+                for (let i = 0; i < firstDay; i += 1) {
+                    const empty = document.createElement("div");
+                    grid.appendChild(empty);
+                }
+                const maxDate = new Date(viewYear, 11, 31);
+                for (let d = 1; d <= daysInMonth; d += 1) {
+                    const date = new Date(year, m, d);
+                    const cell = document.createElement("div");
+                    cell.className = "calendar__date";
+                    cell.textContent = d;
+                    const dateStr = `${year}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                    cell.dataset.date = dateStr;
+                    if (date < new Date(now.getFullYear(), now.getMonth(), now.getDate()) || date > maxDate) {
+                        cell.classList.add("is-disabled");
+                    }
+                    if (rangeStart && dateStr === rangeStart) cell.classList.add("is-selected");
+                    if (rangeEnd && dateStr === rangeEnd) cell.classList.add("is-selected");
+                    if (rangeStart && rangeEnd && dateStr > rangeStart && dateStr < rangeEnd) cell.classList.add("is-range");
+                    grid.appendChild(cell);
+                }
+                calendarEl.appendChild(grid);
+            }
+        };
+
+        renderCalendar();
+
+        calendarEl.addEventListener("click", (event) => {
+            const cell = event.target.closest(".calendar__date");
+            if (!cell || cell.classList.contains("is-disabled")) return;
+            const dateStr = cell.dataset.date;
+            if (!rangeStart || (rangeStart && rangeEnd)) {
+                rangeStart = dateStr;
+                rangeEnd = null;
+            } else {
+                rangeEnd = dateStr;
+                if (rangeEnd < rangeStart) {
+                    const temp = rangeStart;
+                    rangeStart = rangeEnd;
+                    rangeEnd = temp;
+                }
+            }
+            renderCalendar();
+            if (rangeStart && rangeEnd) {
+                const start = rangeStart.split("-").reverse().join(".");
+                const end = rangeEnd.split("-").reverse().join(".");
+                calendarApply.textContent = `Выбрать ${start}–${end}`;
+            } else {
+                calendarApply.textContent = "Выбрать даты";
+            }
+        });
+
+        calendarApply.addEventListener("click", () => {
+            if (!rangeStart || !rangeEnd) return;
+            dateInput.value = rangeStart;
+            dateOutInput.value = rangeEnd;
+            updateDateTrigger();
+            closeDateModal();
+        });
+
+        const updateGuests = () => {
+            adultCountEl.textContent = String(adults);
+            childCountEl.textContent = String(children);
+            const total = adults + children;
+            guestsTrigger.innerHTML = `${total} гост${total === 1 ? "ь" : total < 5 ? "я" : "ей"} <i class="fas fa-chevron-down"></i>`;
+            if (hasSearched) updateHouses();
+        };
+
+        updateGuests();
+
+        guestsTrigger.addEventListener("click", (event) => {
+            event.stopPropagation();
+            guestsPanel.classList.toggle("is-open");
+        });
+        document.addEventListener("click", (event) => {
+            if (!guestsPanel.contains(event.target) && !guestsTrigger.contains(event.target)) {
+                guestsPanel.classList.remove("is-open");
+            }
+        });
+        guestsPanel.addEventListener("click", (event) => {
+            const btn = event.target.closest(".guest-btn");
+            if (!btn) return;
+            const type = btn.dataset.type;
+            const action = btn.dataset.action;
+            if (type === "adult") {
+                if (action === "inc") adults += 1;
+                if (action === "dec") adults = Math.max(1, adults - 1);
+            }
+            if (type === "child") {
+                if (action === "inc") children += 1;
+                if (action === "dec") children = Math.max(0, children - 1);
+            }
+            updateGuests();
+        });
+
+        const updateHouses = () => {
+            const totalGuests = adults + children;
+            if (!hasSearched) {
+                housesContainer.classList.remove("is-hidden");
+                housesEmpty.classList.remove("is-visible");
+                housesNote.classList.remove("is-visible");
+                Array.from(housesContainer.querySelectorAll(".house-card")).forEach((card) => {
+                    card.style.display = "";
+                });
+                return;
+            }
+            housesNote.classList.remove("is-visible");
+            if (totalGuests > 9) {
+                housesContainer.classList.add("is-hidden");
+                housesEmpty.classList.add("is-visible");
+                return;
+            }
+            let anyVisible = false;
+            Array.from(housesContainer.querySelectorAll(".house-card")).forEach((card) => {
+                const max = Number(card.dataset.max || 0);
+                const show = totalGuests <= max || totalGuests >= 8;
+                card.style.display = show ? "" : "none";
+                if (show) anyVisible = true;
+            });
+            housesContainer.classList.toggle("is-hidden", !anyVisible);
+            housesEmpty.classList.toggle("is-visible", !anyVisible);
+            if (totalGuests === 8 || totalGuests === 9) {
+                housesNote.classList.add("is-visible");
+            }
+        };
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            hasSearched = true;
+            updateHouses();
+        });
+
+        const setModalImage = (nextIndex) => {
+            if (!modalGallery.length) return;
+            if (nextIndex < 0) nextIndex = modalGallery.length - 1;
+            if (nextIndex >= modalGallery.length) nextIndex = 0;
+            if (!modalSlider) return;
+            modalIndex = nextIndex;
+            modalSlider.style.transform = `translateX(-${modalIndex * 100}%)`;
+            updateModalThumbs();
+        };
+
+        const updateModalThumbs = () => {
+            Array.from(houseModalGallery.querySelectorAll(".house-modal__thumb")).forEach((thumb) => {
+                const idx = Number(thumb.dataset.index || 0);
+                thumb.classList.toggle("is-active", idx === modalIndex);
+            });
+        };
+
+        const openHouseModal = (card) => {
+            if (!card) return;
+            activeHouseCard = card;
+            houseModalTitle.textContent = card.querySelector(".house-card__title")?.textContent || "";
+            houseModalMeta.textContent = card.querySelector(".house-card__meta")?.textContent || "";
+            houseModalList.innerHTML = "";
+            card.querySelectorAll(".house-card__list li").forEach((item) => {
+                const li = document.createElement("li");
+                li.textContent = item.textContent || "";
+                houseModalList.appendChild(li);
+            });
+            const details = card.querySelector(".house-card__details");
+            const slug = card.dataset.slug || "house";
+            houseModalAmenities.textContent = details?.dataset.amenities || "";
+            houseModalRules.textContent = details?.dataset.rules || "";
+            houseModalPrice.textContent = details?.dataset.price || "";
+            houseModalMore.href = `house-details.html?house=${encodeURIComponent(slug)}`;
+            houseModalGallery.innerHTML = "";
+            modalGallery = (details?.dataset.gallery || "").split(",").map((s) => s.trim()).filter(Boolean);
+            modalIndex = 0;
+            const existingSlider = houseModalImage.querySelector(".house-modal__slider");
+            if (existingSlider) existingSlider.remove();
+            modalSlider = document.createElement("div");
+            modalSlider.className = "house-modal__slider";
+            modalSlider.innerHTML = modalGallery
+                .map((url) => `<div class="house-modal__slide" style="background-image:url('${url}')"></div>`)
+                .join("");
+            houseModalImage.appendChild(modalSlider);
+            houseModalImage.appendChild(houseModalMore);
+            modalGallery.forEach((url, idx) => {
+                const thumb = document.createElement("button");
+                thumb.type = "button";
+                thumb.className = "house-modal__thumb";
+                thumb.style.backgroundImage = `url('${url}')`;
+                thumb.dataset.index = String(idx);
+                thumb.addEventListener("click", () => setModalImage(idx));
+                houseModalGallery.appendChild(thumb);
+            });
+            if (modalGallery.length) {
+                modalIndex = 0;
+                setModalImage(0);
+            }
+            houseModal.classList.add("is-open");
+            houseModal.setAttribute("aria-hidden", "false");
+        };
+
+        const closeHouseModal = () => {
+            houseModal.classList.remove("is-open");
+            houseModal.setAttribute("aria-hidden", "true");
+            activeHouseCard = null;
+        };
+
+        housesContainer.addEventListener("click", (event) => {
+            const card = event.target.closest(".house-card");
+            if (!card) return;
+            openHouseModal(card);
+        });
+
+        houseModal.addEventListener("click", (event) => {
+            if (event.target === houseModal) closeHouseModal();
+        });
+        houseModal.querySelector(".house-modal__close").addEventListener("click", closeHouseModal);
+
+        houseModalImage.addEventListener("touchstart", (event) => {
+            if (!modalGallery.length) return;
+            const touch = event.touches[0];
+            swipeStartX = touch.clientX;
+            swipeStartY = touch.clientY;
+            swipeActive = true;
+        }, { passive: true });
+
+        houseModalImage.addEventListener("touchend", (event) => {
+            if (!swipeActive) return;
+            const touch = event.changedTouches[0];
+            const dx = touch.clientX - swipeStartX;
+            const dy = touch.clientY - swipeStartY;
+            swipeActive = false;
+            if (Math.abs(dx) < 30 || Math.abs(dx) < Math.abs(dy)) return;
+            setModalImage(dx < 0 ? modalIndex + 1 : modalIndex - 1);
+        }, { passive: true });
+
+        houseModalBook.addEventListener("click", () => {
+            if (!activeHouseCard) return;
+            if (!dateInput.value || !dateOutInput.value) {
+                closeHouseModal();
+                openDateModal();
+                return;
+            }
+            const formattedDate = dateInput.value.split("-").reverse().join(".");
+            const formattedDateOut = dateOutInput.value.split("-").reverse().join(".");
+            const guests = adults + children;
+            const house = activeHouseCard.dataset.house || "nomadhouse";
+            const capacity = activeHouseCard.dataset.capacity || "";
+            const message = `Здравствуйте! Хочу забронировать ${house} (${capacity}) с ${formattedDate} по ${formattedDateOut}. Гостей: ${guests}`;
+            const url = `https://wa.me/996709139603?text=${encodeURIComponent(message)}`;
+            window.open(url, "_blank");
+        });
+    </script>
+</body>
+</html>
